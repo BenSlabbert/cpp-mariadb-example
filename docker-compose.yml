@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+  mariadb:
+    image: mariadb:10.3.14
+    restart: on-failure
+    ports:
+      - 3306:3306
+    volumes:
+      - ./init/mariadb:/docker-entrypoint-initdb.d
+      - cpp-mariadb-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=cpp
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+
+volumes:
+  cpp-mariadb-data:
+    driver: local
